@@ -1,21 +1,34 @@
-# Object Detection and Recommendation for Retail
+# Webcam Application
 
-This is a real-time object detection application that uses a trained YOLOv8 model (`best.pt`) and activates your laptop's webcam to detect objects. The application is built with a simple graphical user interface (GUI) using `tkinter`.
+This directory contains the Smart Grocery System desktop interface and its trained weights.
 
-## 🗂 Files
+| File | Purpose |
+|---|---|
+| `app.py` | Tkinter GUI, webcam capture, YOLO detection, rule-based recommendations, and in-memory cart |
+| `best.pt` | Bundled detector weights |
 
-- `app.py` – Python script that runs the application, loads the YOLO model, opens a GUI, and activates the webcam.
-- `best.pt` – The trained YOLOv8 model file for object detection. Place this in the same directory as `app.py`.
+## Run locally
 
----
-
-## 💻 Requirements
-
-You need Python 3.8 or later. Install the required libraries using pip:
+Install Python with Tkinter and these packages:
 
 ```bash
-pip install ultralytics opencv-python pillow
+python -m pip install ultralytics opencv-python pillow
+```
 
-# To run the app
+In `app.py`, replace the original absolute model path in the `__main__` block with:
+
+```python
+app = YOLOCameraApp(root, model_path="best.pt")
+```
+
+From this directory, run:
+
 ```bash
 python app.py
+```
+
+Click **Start** for live detections, **Add to Cart** to store unique detected names, **Clear Cart** to reset them, and **Stop** to release the camera. The app uses camera index `0` and a detection confidence threshold of `0.3`.
+
+Recommendations come from `recommendation_buckets`, a fixed mapping of product names. They exclude products already detected in the current frame. The cart does not store quantities, prices, or data between sessions.
+
+See the [main README](../README.md) for full setup instructions, troubleshooting, training details, and limitations.
